@@ -1,0 +1,8 @@
+.git
+.next
+node_modules
+.env*.local
+npm-debug.log*
+README.md
+e2e
+*.spec.ts
