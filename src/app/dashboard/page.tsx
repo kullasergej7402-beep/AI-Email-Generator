@@ -6,10 +6,15 @@ import type { HistoryItem } from "@/types/ai";
 export const metadata = { title: "Dashboard — AI Email Generator" };
 
 export default async function DashboardPage() {
-  const supabase = createClient();
-  const {
-    data: { user },
-  } = await supabase.auth.getUser();
+  let user = null;
+
+  try {
+    const supabase = createClient();
+    const { data } = await supabase.auth.getUser();
+    user = data.user ?? null;
+  } catch {
+    redirect("/login");
+  }
 
   if (!user) redirect("/login");
 

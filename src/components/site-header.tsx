@@ -12,19 +12,24 @@ const navLinks = [
 ];
 
 export async function SiteHeader() {
-  const supabase = createClient();
-  const {
-    data: { user },
-  } = await supabase.auth.getUser();
-
+  let user = null;
   let plan = "free";
-  if (user) {
-    const { data: profile } = await supabase
-      .from("profiles")
-      .select("plan")
-      .eq("id", user.id)
-      .single();
-    plan = profile?.plan ?? "free";
+
+  try {
+    const supabase = createClient();
+    const { data } = await supabase.auth.getUser();
+    user = data.user ?? null;
+
+    if (user) {
+      const { data: profile } = await supabase
+        .from("profiles")
+        .select("plan")
+        .eq("id", user.id)
+        .single();
+      plan = profile?.plan ?? "free";
+    }
+  } catch {
+    // если Supabase недоступен — показываем шапку без авторизации
   }
 
   return (

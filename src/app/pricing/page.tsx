@@ -4,19 +4,24 @@ import { PricingCards } from "@/components/pricing-cards";
 export const metadata = { title: "Тарифы — AI Email Generator" };
 
 export default async function PricingPage() {
-  const supabase = createClient();
-  const {
-    data: { user },
-  } = await supabase.auth.getUser();
-
+  let user = null;
   let currentPlan = "free";
-  if (user) {
-    const { data: profile } = await supabase
-      .from("profiles")
-      .select("plan")
-      .eq("id", user.id)
-      .single();
-    currentPlan = profile?.plan ?? "free";
+
+  try {
+    const supabase = createClient();
+    const { data } = await supabase.auth.getUser();
+    user = data.user ?? null;
+
+    if (user) {
+      const { data: profile } = await supabase
+        .from("profiles")
+        .select("plan")
+        .eq("id", user.id)
+        .single();
+      currentPlan = profile?.plan ?? "free";
+    }
+  } catch {
+    // показываем страницу без авторизации
   }
 
   return (

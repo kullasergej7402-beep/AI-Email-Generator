@@ -5,10 +5,15 @@ import { ProfileForm } from "@/components/profile-form";
 export const metadata = { title: "Профиль — AI Email Generator" };
 
 export default async function ProfilePage() {
-  const supabase = createClient();
-  const {
-    data: { user },
-  } = await supabase.auth.getUser();
+  let user = null;
+
+  try {
+    const supabase = createClient();
+    const { data } = await supabase.auth.getUser();
+    user = data.user ?? null;
+  } catch {
+    redirect("/login");
+  }
 
   if (!user) redirect("/login");
 
