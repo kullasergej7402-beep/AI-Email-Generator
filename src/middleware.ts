@@ -6,37 +6,44 @@ const PROTECTED = ["/dashboard", "/profile", "/pricing/upgrade"];
 const AUTH_ONLY = ["/login", "/signup"];
 
 export async function middleware(request: NextRequest) {
-  const response = await updateSession(request);
+  const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
+  const supabaseKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
 
-  const supabase = createServerClient(
-    process.env.NEXT_PUBLIC_SUPABASE_URL!,
-    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
-    {
+  if (!supabaseUrl || !supabaseKey) {
+    return NextResponse.next();
+  }
+
+  try {
+    const response = await updateSession(request);
+
+    const supabase = createServerClient(supabaseUrl, supabaseKey, {
       cookies: {
         getAll: () => request.cookies.getAll(),
         setAll: () => {},
       },
+    });
+
+    const {
+      data: { user },
+    } = await supabase.auth.getUser();
+
+    const { pathname } = request.nextUrl;
+
+    const isProtected = PROTECTED.some((p) => pathname.startsWith(p));
+    const isAuthRoute = AUTH_ONLY.some((p) => pathname.startsWith(p));
+
+    if (isProtected && !user) {
+      return NextResponse.redirect(new URL("/login", request.url));
     }
-  );
 
-  const {
-    data: { user },
-  } = await supabase.auth.getUser();
+    if (isAuthRoute && user) {
+      return NextResponse.redirect(new URL("/dashboard", request.url));
+    }
 
-  const { pathname } = request.nextUrl;
-
-  const isProtected = PROTECTED.some((p) => pathname.startsWith(p));
-  const isAuthRoute = AUTH_ONLY.some((p) => pathname.startsWith(p));
-
-  if (isProtected && !user) {
-    return NextResponse.redirect(new URL("/login", request.url));
+    return response;
+  } catch {
+    return NextResponse.next();
   }
-
-  if (isAuthRoute && user) {
-    return NextResponse.redirect(new URL("/dashboard", request.url));
-  }
-
-  return response;
 }
 
 export const config = {
