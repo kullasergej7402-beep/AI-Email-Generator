@@ -14,11 +14,11 @@ export function CtaSection() {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.6 }}
-          className="relative overflow-hidden rounded-3xl bg-gradient-to-br from-violet-600 via-indigo-600 to-blue-600 px-8 py-20 text-center shadow-2xl shadow-violet-500/25"
+          className="relative overflow-hidden rounded-3xl bg-gradient-to-br from-zinc-900 via-violet-950 to-zinc-900 px-8 py-20 text-center shadow-2xl shadow-black/30 dark:shadow-black/50"
         >
           {/* Inner glow orbs */}
-          <div aria-hidden className="pointer-events-none absolute -left-20 -top-20 h-64 w-64 rounded-full bg-white/10 blur-3xl" />
-          <div aria-hidden className="pointer-events-none absolute -bottom-20 -right-20 h-64 w-64 rounded-full bg-white/10 blur-3xl" />
+          <div aria-hidden className="pointer-events-none absolute -left-20 -top-20 h-64 w-64 rounded-full bg-violet-600/30 blur-3xl" />
+          <div aria-hidden className="pointer-events-none absolute -bottom-20 -right-20 h-64 w-64 rounded-full bg-indigo-600/20 blur-3xl" />
 
           {/* Dot grid overlay */}
           <div

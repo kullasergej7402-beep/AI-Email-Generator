@@ -4,7 +4,7 @@ import { useState, useEffect } from "react";
 import Link from "next/link";
 import { motion } from "framer-motion";
 import { Button } from "@/components/ui/button";
-import { ArrowRight, ChevronDown, Sparkles } from "lucide-react";
+import { ArrowRight, ChevronDown } from "lucide-react";
 
 export function HeroSection() {
   const [mounted, setMounted] = useState(false);
@@ -40,19 +40,6 @@ export function HeroSection() {
 
       <div className="flex max-w-4xl flex-col items-center gap-7">
 
-        {/* Badge */}
-        {mounted && (
-          <motion.div
-            initial={{ opacity: 0, scale: 0.9 }}
-            animate={{ opacity: 1, scale: 1 }}
-            transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
-          >
-            <span className="inline-flex items-center gap-2 rounded-full border border-violet-200 bg-violet-50 px-4 py-1.5 text-xs font-semibold text-violet-700 dark:border-violet-800 dark:bg-violet-950/50 dark:text-violet-300">
-              <Sparkles className="h-3 w-3" />
-              Powered by Claude AI
-            </span>
-          </motion.div>
-        )}
 
         {/* Headline */}
         <motion.h1
