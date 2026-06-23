@@ -46,8 +46,8 @@ export function CtaSection() {
               </Button>
               <Button
                 size="lg"
-                variant="outline"
-                className="border-white/40 text-white hover:bg-white/10 hover:border-white/60"
+                variant="ghost"
+                className="border border-white/40 !text-white hover:bg-white/10 hover:border-white/60"
                 asChild
               >
                 <Link href="/login">Уже есть аккаунт</Link>
